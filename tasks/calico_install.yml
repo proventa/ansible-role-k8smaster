@@ -1,0 +1,8 @@
+---
+- name: Download calico config file
+  get_url:
+    url: https://docs.projectcalico.org/manifests/calico.yaml
+    dest: "{{ k8s_home }}/calico.yaml"
+
+- name: install calico network plugin
+  command: kubectl apply -f {{ k8s_home }}/calico.yaml

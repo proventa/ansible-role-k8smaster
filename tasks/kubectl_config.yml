@@ -1,0 +1,15 @@
+---
+- name: kube directory for kubectl config file
+  file:
+    path: "{{ k8s_home }}/.kube"
+    owner: "{{ k8s_user }}"
+    group: "{{ k8s_user }}"
+    state: directory
+
+- name: Copy kubeconf file
+  copy:
+    src: /etc/kubernetes/admin.conf
+    dest: "{{ k8s_home }}/.kube/config"
+    owner: "{{ k8s_user }}"
+    group: "{{ k8s_user }}"
+    remote_src: yes

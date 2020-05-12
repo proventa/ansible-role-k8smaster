@@ -1,0 +1,16 @@
+---
+- name: Prepare OS
+  block:
+    - import_tasks: update_os.yml
+    - import_tasks: firewall.yml
+    - import_tasks: add_repo.yml
+
+- name: Install and configure k8s master
+  block:
+    - import_tasks: k8s_master_install.yml
+    - import_tasks: kubectl_config.yml
+    - import_tasks: calico_install.yml
+
+- name: Prepare worker node connection
+  block:
+    - import_tasks: create_token.yml

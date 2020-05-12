@@ -1,0 +1,28 @@
+---
+- name: install k8s components in version {{ k8s_version }}
+  apt:
+    name: "{{ k8s_components }}"
+    state: present
+
+- name: disable auto update of k8s components
+  command: apt-mark hold kubelet kubeadm kubectl
+
+- name: create kubeadm config file
+  shell: |
+    cat <<EOF | sudo tee {{ k8s_home }}/kubeadm-config.yaml
+    apiVersion: kubeadm.k8s.io/v1beta2
+    kind: ClusterConfiguration
+    kubernetesVersion: 1.18.1
+    controlPlaneEndpoint: "{{ k8s_hostname }}:{{ k8s_master_port }}"
+    networking:
+      podSubnet: {{ pod_subnet }}
+    EOF
+  args:
+      executable: /bin/bash
+
+- name: initialize k8smaster
+  shell: |
+    kubeadm init --config={{ k8s_home }}/kubeadm-config.yaml --upload-certs \
+    | tee kubeadm-init.out
+  args:
+      executable: /bin/bash
