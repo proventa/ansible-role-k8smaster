@@ -34,6 +34,16 @@
     enabled: yes
     masked: no
 
+- name: Check if ip and hostname are set
+  become: yes
+  become_user: root
+  lineinfile:
+    path: /etc/hosts
+    line: "$(ip addr show eth1 | grep "inet\b" | awk '{print $2}' | cut -d/ -f1) {{ k8s_hostname }}"
+    state: present
+  check_mode: yes
+  register: hostpresent
+
 - name: add k8s master host to hosts file
   shell: |
     tee -a /etc/hosts<<EOF
@@ -41,6 +51,7 @@
     EOF
   args:
     executable: /bin/bash
+  when: hostpresent is not changed
 
 - name: Disable swap
   shell: swapoff -a
