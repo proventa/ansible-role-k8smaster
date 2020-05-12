@@ -17,4 +17,4 @@
     --upload-certs \
     | tee kubeadm-init.out
   args:
-     executable: /bin/bash
+    executable: /bin/bash

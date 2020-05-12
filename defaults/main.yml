@@ -27,6 +27,7 @@ k8s_user: root
 
 # OS dependencies
 os_dependencies:
+    - gpg-agent
     - firewalld
     - net-tools
     - python3
