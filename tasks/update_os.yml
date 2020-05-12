@@ -43,7 +43,6 @@
     state: present
   check_mode: yes
   register: hostpresent
-  failed_when: hostpresent is changed
 
 - name: add k8s master host to hosts file
   shell: |
