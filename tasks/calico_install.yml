@@ -1,8 +1,20 @@
 ---
+- name: check if calico yaml exists
+  stat:
+    path: "{{ k8s_home }}/calico.yaml"
+  register: calicoyml
+
 - name: Download calico config file
   get_url:
     url: https://docs.projectcalico.org/manifests/calico.yaml
     dest: "{{ k8s_home }}/calico.yaml"
+  when: calicoyml.stat.exists
+
+- name: check if kubeconf exists
+  stat:
+    path: /etc/kubernetes/admin.conf
+  register: kubeconf
 
 - name: install calico network plugin
   command: kubectl apply -f {{ k8s_home }}/calico.yaml
+  when: kubeconf.stat.exists
