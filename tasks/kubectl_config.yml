@@ -6,6 +6,11 @@
     group: "{{ k8s_user }}"
     state: directory
 
+- name: check if kubeconf exists
+  stat: 
+    path: /etc/kubernetes/admin.conf
+  register: kubeconf
+
 - name: Copy kubeconf file
   copy:
     src: /etc/kubernetes/admin.conf
@@ -13,3 +18,4 @@
     owner: "{{ k8s_user }}"
     group: "{{ k8s_user }}"
     remote_src: yes
+  when: kubeconf.stat.exists == true
