@@ -7,7 +7,7 @@
     state: directory
 
 - name: check if kubeconf exists
-  stat: 
+  stat:
     path: /etc/kubernetes/admin.conf
   register: kubeconf
 
@@ -18,4 +18,4 @@
     owner: "{{ k8s_user }}"
     group: "{{ k8s_user }}"
     remote_src: yes
-  when: kubeconf.stat.exists == true
+  when: kubeconf.stat.exists
