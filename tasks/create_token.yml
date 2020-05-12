@@ -1,6 +1,12 @@
 ---
+- name: check if kubeconf exists
+  stat:
+    path: /etc/kubernetes/admin.conf
+  register: kubeconf
+
 - name: create token for new worker nodes
   command: kubeadm token create
+  when: kubeconf.stat.exists
 
 - name: create discovery token for secure worker adding
   shell: |
