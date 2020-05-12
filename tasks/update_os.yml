@@ -39,7 +39,7 @@
   become_user: root
   lineinfile:
     path: /etc/hosts
-    line: "$(ip addr show eth1 | grep "inet\b" | awk '{print $2}' | cut -d/ -f1) {{ k8s_hostname }}"
+    line: "192.168.56.160 {{ k8s_hostname }}"
     state: present
   check_mode: yes
   register: hostpresent
