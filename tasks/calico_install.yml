@@ -8,7 +8,7 @@
   get_url:
     url: https://docs.projectcalico.org/manifests/calico.yaml
     dest: "{{ k8s_home }}/calico.yaml"
-  when: calicoyml.stat.exists
+  when: not calicoyml.stat.exists
 
 - name: check if kubeconf exists
   stat:

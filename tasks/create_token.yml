@@ -8,6 +8,11 @@
   command: kubeadm token create
   when: kubeconf.stat.exists
 
+- name: check if discovery_token exists
+  stat:
+    path: "{{ k8s_home }}/.discovery_token"
+  register: discoverytoken
+
 - name: create discovery token for secure worker adding
   shell: |
     openssl x509 -pubkey \
@@ -16,3 +21,4 @@
     -sha256 -hex | sed 's/ˆ.* //' > .discovery_token
   args:
     executable: /bin/bash
+  when: not discoverytoken.stat.exists

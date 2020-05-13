@@ -7,14 +7,21 @@
 - name: disable auto update of k8s components
   command: apt-mark hold kubelet kubeadm kubectl
 
+- name: check if kubeadm-init exists
+  stat:
+    path: "{{ k8s_home }}/kubeadm-init.out"
+  register: kubeadminit
+
+
 - name: initialize k8smaster
   shell: |
-    kubeadm init --kubernetes-version=1.18.1 \
-    --node-name=k8smaster \
-    --apiserver-advertise-address=192.168.56.160 \
-    --control-plane-endpoint=k8smaster:6443 \
-    --pod-network-cidr=192.168.0.0/16 \
+    kubeadm init --kubernetes-version={{ k8s_version }} \
+    --node-name={{ k8s_hostname }} \
+    --apiserver-advertise-address={{ k8s_master_ip }} \
+    --control-plane-endpoint={{ k8s_hostname }}:{{ k8s_master_port }} \
+    --pod-network-cidr={{ pod_subnet }} \
     --upload-certs \
     | tee kubeadm-init.out
   args:
     executable: /bin/bash
+  when: not kubeadminit.stat.exists

@@ -1,6 +1,9 @@
 ---
-# Set major version of Kubernetes
-k8s_version: 1.18.1-00
+# Set Kubernetes version
+k8s_major_version: 1
+k8s_minor_version: 18
+k8s_patch_version: 1
+k8s_version: "{{ k8s_major_version }}.{{ k8s_minor_version }}.{{ k8s_patch_version }}"
 
 # Kubernetes repo
 k8s_repo: deb http://apt.kubernetes.io/ kubernetes-xenial main
@@ -21,6 +24,7 @@ etcd_connection_port: 2379
 etcd_raft_port: 2380
 
 # Kubernetes environments
+k8s_master_ip: 192.168.56.160
 k8s_hostname: k8smaster
 k8s_home: /root
 k8s_user: root
@@ -40,6 +44,6 @@ selinux_dependencies:
 
 # Kubeadm, kubelet and kubectl
 k8s_components:
-    - kubeadm={{ k8s_version }}
-    - kubelet={{ k8s_version }}
-    - kubectl={{ k8s_version }}
+    - kubeadm={{ k8s_version }}-00
+    - kubelet={{ k8s_version }}-00
+    - kubectl={{ k8s_version }}-00

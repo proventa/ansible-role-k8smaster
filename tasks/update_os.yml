@@ -39,7 +39,7 @@
   become_user: root
   lineinfile:
     path: /etc/hosts
-    line: "192.168.56.160 {{ k8s_hostname }}"
+    line: "{{ k8s_master_ip }} {{ k8s_hostname }}"
     state: present
   check_mode: yes
   register: hostpresent
@@ -51,7 +51,7 @@
     EOF
   args:
     executable: /bin/bash
-  when: hostpresent is not changed
+  when: hostpresent is changed
 
 - name: Disable swap
   shell: swapoff -a
